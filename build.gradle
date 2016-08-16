@@ -14,27 +14,29 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'docker'
 
-jar {
-    baseName = 'gs-spring-boot-docker'
-    version =  '0.1.0'
-}
-
 repositories {
     mavenCentral()
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-group = "springio"
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web") 
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.security:spring-security-web")
+    compile("org.springframework.security:spring-security-config")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
+
+jar {
+    baseName = "learn-spring-security"
+}
+
+group = "example"
 
 task buildDocker(type: Docker, dependsOn: build) {
     push = true
