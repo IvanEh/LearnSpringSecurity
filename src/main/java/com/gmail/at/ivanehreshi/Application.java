@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
-@Configuration
-@EnableWebMvc
 @Import({RootConfig.class, SecurityConfig.class, WebConfig.class})
 @RestController
 public class Application {
