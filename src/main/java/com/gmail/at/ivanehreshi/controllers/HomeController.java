@@ -31,7 +31,7 @@ public class HomeController {
                                @RequestParam String password) {
         userService.save(new User(username, password,
                 Arrays.asList(new SimpleGrantedAuthority("USER"))));
-        return "redirect:/";
+        return "redirect:/static/static_page.html";
     }
 
 }
