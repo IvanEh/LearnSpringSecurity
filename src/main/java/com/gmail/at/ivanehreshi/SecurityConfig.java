@@ -2,7 +2,6 @@ package com.gmail.at.ivanehreshi;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,12 +18,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         /**
          * Note that spring assumes a default db scheme with `users` and `authorities` tables.
          * We are using our own scheme so insertion(withUser()) won't work
+         *
+         * Manually create the scheme and add a user for testing
          */
         authBuilder.jdbcAuthentication()
                 .dataSource(dataSource)
                 .authoritiesByUsernameQuery("select username, role from user_role where username = ?")
                 .usersByUsernameQuery("select username,password,enabled from user where username = ?");
-
     }
 
     /*
