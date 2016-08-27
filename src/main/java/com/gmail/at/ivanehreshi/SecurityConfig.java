@@ -2,16 +2,27 @@ package com.gmail.at.ivanehreshi;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter  {
     @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private int intBean;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authBuilder) throws Exception {
-        authBuilder.inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+        authBuilder.jdbcAuthentication()
+                .dataSource(dataSource)
+                .authoritiesByUsernameQuery("select username, role from user_role where username = ?")
+                .usersByUsernameQuery("select username,password,enabled from user where username = ?");
     }
 
     /*
@@ -32,13 +43,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .and()
             .logout()
                 .clearAuthentication(true)
-//                .logoutSuccessUrl("/login?logout")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .and()
             .httpBasic()
                 .and()
             .csrf().disable();
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }
