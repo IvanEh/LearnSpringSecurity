@@ -16,7 +16,6 @@ public class RootConfig {
         MysqlDataSource mysqlDataSource = new MysqlDataSource();
 
         mysqlDataSource.setURL("jdbc:mysql://localhost:3306/test");
-//        mysqlDataSource.setDatabaseName("test");
         mysqlDataSource.setUser("ivaneh");
         mysqlDataSource.setPassword("password");
         mysqlDataSource.setPort(3306);

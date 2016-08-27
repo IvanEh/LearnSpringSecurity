@@ -15,14 +15,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
     private DataSource dataSource;
 
     @Autowired
-    private int intBean;
-
-    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authBuilder) throws Exception {
+        /**
+         * Note that spring assumes a default db scheme with `users` and `authorities` tables.
+         * We are using our own scheme so insertion(withUser()) won't work
+         */
         authBuilder.jdbcAuthentication()
                 .dataSource(dataSource)
                 .authoritiesByUsernameQuery("select username, role from user_role where username = ?")
                 .usersByUsernameQuery("select username,password,enabled from user where username = ?");
+
     }
 
     /*

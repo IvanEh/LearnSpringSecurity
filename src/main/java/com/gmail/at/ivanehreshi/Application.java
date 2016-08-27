@@ -13,11 +13,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @RestController
 public class Application {
 
-	@Bean
-    public Integer intBean() {
-        return 1;
-    }
-
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
