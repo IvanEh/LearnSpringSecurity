@@ -37,6 +37,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         return authProvider;
     }
 
+    @Bean
+    public DigestAuthenticationEntryPoint digestEntryPoint() {
+        DigestAuthenticationEntryPoint entryPoint =
+                new DigestAuthenticationEntryPoint();
+        entryPoint.setRealmName("Basic Realm");
+        entryPoint.setKey("acegi");
+        return entryPoint;
+    }
+
+    @Autowired
+    @Bean
+    public Filter digestFilter(UserDetailsService userDetailsService,
+                               DigestAuthenticationEntryPoint digestEntryPoint) {
+        DigestAuthenticationFilter filter =
+                new DigestAuthenticationFilter();
+        filter.setUserDetailsService(userDetailsService);
+        filter.setAuthenticationEntryPoint(digestEntryPoint);
+        return filter;
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authBuilder,
                                 AuthenticationProvider authProvider) throws Exception {
@@ -49,24 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         authBuilder.authenticationProvider(authProvider);
     }
 
-    @Autowired
-    @Bean
-    public Filter digestFilter(UserDetailsService userDetailsService) {
-        DigestAuthenticationFilter filter =
-                new DigestAuthenticationFilter();
-        filter.setUserDetailsService(userDetailsService);
-        filter.setAuthenticationEntryPoint(digestEntryPoint());
-        return filter;
-    }
 
-    @Bean
-    public DigestAuthenticationEntryPoint digestEntryPoint() {
-        DigestAuthenticationEntryPoint entryPoint =
-                new DigestAuthenticationEntryPoint();
-        entryPoint.setRealmName("Basic Realm");
-        entryPoint.setKey("acegi");
-        return entryPoint;
-    }
     /*
      * The URL that triggers log out to occur (default is "/logout").
      * If CSRF protection is enabled (default), then the request must
@@ -92,7 +95,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                 .and()
             .httpBasic()
                 .and()
-            .addFilterAfter(digestFilter(userDetailsService()),BasicAuthenticationFilter.class)
+            .addFilterAfter(digestFilter(userDetailsService(), digestEntryPoint()),
+                            BasicAuthenticationFilter.class)
             .csrf().disable();
 
 

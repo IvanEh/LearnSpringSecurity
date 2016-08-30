@@ -13,6 +13,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import java.util.List;
 
 public class UserServiceImpl extends JdbcUserDetailsManager implements UserService {
+
     public final String SQL_INSERT_USER =
             "INSERT INTO `user`(username, password, enabled) VALUES (?, ?, ?)";
     public final String SQL_INSERT_USER_ROLE =
@@ -27,6 +28,7 @@ public class UserServiceImpl extends JdbcUserDetailsManager implements UserServi
     @Autowired
     public UserServiceImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+
         setCreateUserSql(SQL_INSERT_USER);
         setUsersByUsernameQuery(SQL_SELECT_USER);
         setJdbcTemplate(jdbcTemplate);
