@@ -1,6 +1,6 @@
 package com.gmail.at.ivanehreshi;
 
-import com.gmail.at.ivanehreshi.services.UserServiceImpl2;
+import com.gmail.at.ivanehreshi.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
     @Autowired
     @Bean
     public UserDetailsService userDetailsService(JdbcTemplate jdbcTemplate) {
-        return new UserServiceImpl2(jdbcTemplate);
+        return new UserServiceImpl(jdbcTemplate);
     }
 
     @Autowired
