@@ -12,7 +12,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import java.util.List;
 
-public class UserServiceImpl extends JdbcUserDetailsManager implements UserService {
+public class UserServiceImpl extends JdbcUserDetailsManager {
 
     public final String SQL_INSERT_USER =
             "INSERT INTO `user`(username, password, enabled) VALUES (?, ?, ?)";
@@ -34,17 +34,6 @@ public class UserServiceImpl extends JdbcUserDetailsManager implements UserServi
         setJdbcTemplate(jdbcTemplate);
         setEnableAuthorities(false);
         setEnableGroups(false);
-    }
-
-    @Override
-    public boolean save(UserDetails user) {
-        createUser(user);
-
-        for (GrantedAuthority authority : user.getAuthorities()) {
-            jdbcTemplate.update(SQL_INSERT_USER_ROLE, user.getUsername(), authority.getAuthority());
-        }
-
-        return true;
     }
 
     @Override
