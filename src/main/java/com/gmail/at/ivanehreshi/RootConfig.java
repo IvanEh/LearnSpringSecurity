@@ -27,11 +27,6 @@ public class RootConfig {
         return mysqlDataSource;
     }
 
-    @Bean
-    UserService userService() {
-        return new UserServiceImpl();
-    }
-
     @Autowired
     @Bean
     JdbcTemplate jdbcTemplate(DataSource dataSource) {
