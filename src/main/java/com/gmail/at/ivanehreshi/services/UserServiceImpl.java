@@ -32,6 +32,8 @@ public class UserServiceImpl extends JdbcUserDetailsManager {
         setCreateUserSql(SQL_INSERT_USER);
         setUsersByUsernameQuery(SQL_SELECT_USER);
         setJdbcTemplate(jdbcTemplate);
+
+        // NOTE! these two cannot be false simultaneously. see initDao()
         setEnableAuthorities(false);
         setEnableGroups(false);
     }
@@ -58,6 +60,8 @@ public class UserServiceImpl extends JdbcUserDetailsManager {
         authorities.add(new SimpleGrantedAuthority("DUMMY"));
     }
 
+    // The super method throws an exception if both enableAuthorities and
+    // enableGroups are false
     @Override
     protected void initDao() throws ApplicationContextException {    }
 }
